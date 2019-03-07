@@ -1,0 +1,15 @@
+﻿category,subcat,boys,girls,all
+average,Average,14.3788,14.4169,14.342
+ethnicity,White,16.8875,17.3792,16.4116
+ethnicity,Black and Minority Ethnic groups,6.5306,5.1438,7.8658
+famfunc,Healthy,11.1819,10.8421,11.4994
+famfunc,Unhealthy,25.212,25.3664,25.0367
+pmental,Good,10.8622,10.308,11.3823
+pmental,Bad,29.5566,31.1781,27.7068
+benefits,No,10.0846,10.271,9.8983
+benefits,Yes,20.6569,22.4892,18.9442
+income,Highest quintile (>£43624),8.2479,9.3186,7.2436
+income,Second highest quintile (£27274-£43624),12.2583,13.3827,11.2909
+income,Middle quintile (£17529 - £27273),16.622,15.3613,17.8594
+income,Second lowest quintile (£10636 - 17528),16.5638,18.4,14.767
+income,Lowest quintile (£0 - £10635),14.0184,14.1469,13.8853

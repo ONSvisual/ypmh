@@ -1,0 +1,12 @@
+﻿category,subcat,boys,girls,all
+average,Average,6.8431,5.5453,4.1785
+ethnicity,White,8.3597,6.1283,3.8568
+ethnicity,Black and Minority Ethnic groups,2.8851,3.9299,5.1359
+famfunc,Healthy,6.5605,4.7707,2.8972
+famfunc,Unhealthy,8.9564,10.2375,11.5939
+pmental,Good,5.6825,4.0987,2.425
+pmental,Bad,14.622,14.9347,15.2505
+benefits,No,3.7493,2.824,1.8769
+benefits,Yes,13.6148,10.3531,6.986
+income,Highest / Middle Tertile,6.1185,3.9808,1.7364
+income,Lowest Tertile,10.5463,8.8912,7.0283
