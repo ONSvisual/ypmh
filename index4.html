@@ -88,7 +88,7 @@ table {
     }
 
     body {
-      max-width: 600px;
+      max-width: 700px;
       font-family: "Open Sans", sans-serif;
       margin-top: 30px;
     }
@@ -127,7 +127,7 @@ table {
       display: inline-block;
       text-rendering: optimizeLegibility;
       border:2px solid #124d80;
-      background-color: "#fff";
+      background-color: #fff;
       font-size:14px;
       cursor:pointer;
       box-shadow: none;
@@ -1230,7 +1230,8 @@ table {
         }
 
         //change data on age group
-        d3.selectAll(".btn--secondary").on("click", function(d) {
+        d3.selectAll(".btn--secondary")
+          .on("click", function(d) {
 
           d3.selectAll(".btn--secondary").classed("btnselect",false);
           d3.select(this).classed("btnselect",true);
@@ -1247,6 +1248,19 @@ table {
 
           })
         })
+        .on("keypress", function(d) {
+          if(d3.event.keyCode === 32 || d3.event.keyCode ===13) {
+            d3.selectAll(".btn--secondary").classed("btnselect",false);
+            d3.select("#" + d.id).classed("btnselect",true);
+
+
+
+            curr_age = d3.select("#" + d.id).attr("id")
+            d3.csv("data/" + curr_age + ".csv", function(error, data) {
+              graphic_data1 = data;
+              update_graphic(curr_id);
+          })
+        }})
 
 
 
