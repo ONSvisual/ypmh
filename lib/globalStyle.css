@@ -40,13 +40,13 @@
 
 
         /*.footnotes p,*/
-        .footer  /* required */
+    .footer  /* required */
 		{
-            font-size: 14px;
-            color: #808080;
-			font-weight:100;
-			padding-bottom:2px;
-        }
+      font-size: 14px;
+      color: #323321;
+      font-weight: 600;
+      padding-bottom: 2px;
+    }
 
 
 
@@ -79,8 +79,8 @@
 		/* y-axis tick labels */
         #graphic .axis  /* required */
 		{
-            font-size: 12px;
-            fill: #666 !important;
+            font-size: 14px;
+            fill: #323132 !important;
         }
 
 
@@ -176,8 +176,8 @@
 		/* y-axis units label */
         #graphic .unit/* required */
 		{
-            font-size:12px;
-            fill:#333333;
+            font-size:14px;
+            fill:#323132;
             text-align: left;
 			width:130px;
 			height:20px;
@@ -186,9 +186,9 @@
         }
 
 		.annotext0, .annotext1, .annotext2, .annotext3 {
-		    font-family: 'Open Sans', sans-serif;
-			font-size: 12px;
-			fill: #666;
+		  font-family: 'Open Sans', sans-serif;
+			font-size: 14px;
+			fill: #323132;
 			font-weight:500;
 		}
 
@@ -202,7 +202,7 @@
 
 		#centreline /* required */
 		{
-			stroke:#666;
+			stroke:#323132;
 			stroke-width:3px;
 		}
 
@@ -225,8 +225,8 @@
 		/* footnotes to graph */
 		#keypoints/* required. */
 		{
-			margin-bottom:10px;
-			color:#666;
+			margin-bottom:14px;
+			color:#323132;
 			font-weight:700;
 		}
 

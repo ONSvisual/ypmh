@@ -11,6 +11,58 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <link rel="stylesheet" href="./lib/globalStyle.css" />
   <style type="text/css">
+
+
+  /* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, button {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
     .background0 {
       background: #F5942F;
     }
@@ -72,13 +124,13 @@
       font-size: 1rem;
       font-weight: 400;
       border-radius: 0px !important;
-      border-color: #124d80;
       display: inline-block;
       text-rendering: optimizeLegibility;
-      border-width: 2px;
+      border:2px solid #124d80;
       background-color: "#fff";
       font-size:14px;
       cursor:pointer;
+      box-shadow: none;
     }
 
     .btn:hover {
@@ -87,7 +139,7 @@
     }
 
     .btn:active {
-      top: 1px;
+      top: 0px;
     }
 
     .btn:active {
@@ -107,6 +159,17 @@
       color: #fff !important;
     }
 
+    .btn:focus, .filter_img:focus, .gender_img:focus{
+      outline: 3px solid #f93;
+    }
+
+    button,
+    [type="button"],
+    [type="reset"],
+    [type="submit"] {
+     -webkit-appearance: none;
+    }
+
     p {
       font-size: 14px;
     }
@@ -123,7 +186,7 @@
 
     .filter_img text, .gender_img text {
       float: right;
-      padding-top: 7px;
+      padding-top: 10px;
       padding-left: 2px;
       color: #124d80;
       font-size:14px;
@@ -132,6 +195,7 @@
     h4 {
       margin-top: 20px !important;
       margin-bottom: 10px !important;
+      font-weight:600;
     }
 
     .images_div, .gender_div {
@@ -215,10 +279,10 @@
 <body>
   <div>
     <h2>Select an age group</h2>
-    <button style="width:24%" id="YMH_2to4" class="btn btn--secondary btn--blue col-sm-3">2-4</button>
-    <button style="width:24%" id="YMH_5to10" class="btn btn--secondary btn--blue col-sm-3">5-10</button>
-    <button style="width:24%" id="YMH_11to16" class="btn btn--secondary btn--blue col-sm-3">11-16</button>
-    <button style="width:24%" id="YMH_17to19" class="btn btn--secondary btn--blue col-sm-3">17-19</button>
+    <button tabindex=1 style="width:24%" id="YMH_2to4" class="btn btn--secondary btn--blue col-sm-3">2-4</button>
+    <button tabindex=2 style="width:24%" id="YMH_5to10" class="btn btn--secondary btn--blue col-sm-3">5-10</button>
+    <button tabindex=3 style="width:24%" id="YMH_11to16" class="btn btn--secondary btn--blue col-sm-3">11-16</button>
+    <button tabindex=4 style="width:24%" id="YMH_17to19" class="btn btn--secondary btn--blue col-sm-3">17-19</button>
     <p id="filtertext">Click to see how different factors affect the likelihood of mental health condition.</p>
     <div class="images_div">
 
@@ -228,17 +292,19 @@
 
     </div>
 
-    <h4 id="filter_title">Average percent of mental health disorders of childred aged </h4>
+    <!-- <h4 id="filter_title">Average percent of mental health disorders of childred aged </h4> -->
     <div id="graphic">
       <!-- <img src="fallback.png" alt="[Chart]" /> -->
+    </div>
+    <div class="footer">
+    Office for National Statistics
     </div>
     <div id="tooltip" display="none" style="position: absolute; opacity: 0;">
     <div id="keypoints">
       <p></p>
     </div>
 
-    <div class="footer">
-    </div>
+
 
     <script src="https://cdn.ons.gov.uk/vendor/d3/4.13.0/d3.min.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.1.0/d3-annotation.js" type="text/javascript"></script>
@@ -247,7 +313,7 @@
     <script>
       var graphic = d3.select('#graphic');
       var keypoints = d3.select('#keypoints');
-      var footer = d3.select(".footer");
+      //var footer = d3.select(".footer");
       var pymChild = null;
       var rowheight = 40;
       var curr_age = "YMH_2to4";
@@ -261,7 +327,8 @@
           src: "img/ethnicity.svg",
           id: "ethnicity",
           class:"filter_img",
-          name:"Ethnicity",
+          name: "Ethnic group",
+          title:"% of children with mental health conditions by ethnic group",
           tooltip:"Ethnic group of child"
 
         },
@@ -269,7 +336,8 @@
           src: "img/famfunc.svg",
           id: "famfunc",
           class:"filter_img",
-          name:"Family",
+          name: "Family",
+          title:"% of children with mental health conditions by Ethnicity",
           tooltip:"How well the family gets on"
 
         },
@@ -278,6 +346,7 @@
           id: "pmental",
           class:"filter_img",
           name:"Parents mental health",
+          title:"",
           tooltip:"Parents mental health"
 
         },
@@ -286,6 +355,7 @@
           id: "income",
           class:"filter_img",
           name:"Income",
+          title: "",
           tooltip:"Household income"
 
         },
@@ -294,6 +364,7 @@
           id: "benefits",
           class:"filter_img",
           name:"Benefits",
+          title:"",
           tooltip:"In reciept of income and disability benefits"
 
         }
@@ -429,6 +500,8 @@
 
       function drawImages () {
 
+        tabindex = 5;
+
           agegroup = curr_age.substr(3);
 
             d3.select(".images_div")
@@ -440,6 +513,7 @@
               .enter()
               .append("div")
               .attr("data-nm", function(d){return d.name})
+              .attr("tabindex", function(d,i){return tabindex+i})
               .attr("id", function(d) {return d.id})
               .style("display","inline-block")
               .attr("class", "filter_img")
@@ -456,11 +530,20 @@
 
           imagepills.append("text").text(function(d,i){return d.name})
 
-          d3.select(".images_div").selectAll(".filter_img").on("click", addClick)
+          d3.select(".images_div")
+            .selectAll(".filter_img")
+            .on("click", addClick)
+            .on("keypress", function(d) {
+              if(d3.event.keyCode === 32 || d3.event.keyCode ===13) {
+                addClick(d);
+              }
+            })
 
       } //end drawimages
 
       function drawGenderImages () {
+
+        tabindex = 10
 
 
             d3.select(".gender_div")
@@ -471,6 +554,7 @@
               .data(["All","Boys","Girls"])
               .enter()
               .append("div")
+              .attr("tabindex", function(d,i){return tabindex+i})
               .attr("id", function(d) {return "btn" + d})
               .style("display","inline-block")
               .attr("class", "gender_img");
@@ -486,7 +570,15 @@
 
           imagepills.append("text").text(function(d,i){return d})
 
-          d3.select(".gender_div").selectAll(".gender_img").on("click", addGenderClick)
+          d3.select(".gender_div")
+            .selectAll(".gender_img")
+            .on("click", addGenderClick)
+            .on("keypress", function(d) {
+              if(d3.event.keyCode === 32 || d3.event.keyCode ===13) {
+                addGenderClick(d);
+              }
+            })
+
 
           d3.select("#btnAll")
             .style("border", "2px #124d80 solid")
@@ -530,7 +622,9 @@
 
       function addClick(d) {
 
-        d3.select("#filter_title").selectAll("text").remove();
+        console.log(d)
+
+        //d3.select("#filter_title").selectAll("text").remove();
         d3.selectAll(".filter_img")
           .style("border", "2px #124d80 solid")
           .style("background-color", "#fff")
@@ -542,28 +636,31 @@
 
 
 
-        curr_id = d3.select(this).attr('id')
+        curr_id = d3.select("#" + d.id).attr('id')
 
         update_graphic(curr_id);
 
-        var filter_name = d3.select(this).attr("data-nm")
+        // var filter_name = d3.select("#" + d.id).attr("data-nm")
+        //
+        // console.log(filter_name)
 
-        console.log(filter_name)
+        //d3.select("#filter_title").text(filter_name);
 
-        d3.select("#filter_title").text(filter_name);
-        d3.select(this)
+        d3.select("#" + d.id)
           .style("border", "2px #124d80 solid")
           .style("background-color", "#124d80")
 
-        d3.select(this).select("img").attr("src", function(d) {return "img/" + d.id + "_sel.svg"})
-        d3.select(this).select("text").style("color","#fff")
+        d3.select("#" + d.id).select("img").attr("src", function(d) {return "img/" + d.id + "_sel.svg"})
+        d3.select("#" + d.id).select("text").style("color","#fff")
 
       } //end addClick
 
 
       function addGenderClick(d) {
 
-      genderlabel = d3.select(this).attr("id");
+        console.log(d)
+
+      genderlabel =  "btn" + d;
 
       console.log(genderlabel)
 
@@ -590,12 +687,12 @@
         update_graphic(curr_id);
 
 
-        d3.select(this)
+        d3.select("#" + genderlabel)
           .style("border", "2px #124d80 solid")
           .style("background-color", "#124d80")
 
-        d3.select(this).select("img").attr("src", function(d) {return "img/" + d + "_sel.svg"})
-        d3.select(this).select("text").style("color","#fff")
+        d3.select("#" + genderlabel).select("img").attr("src", function(d) {return "img/" + d + "_sel.svg"})
+        d3.select("#" + genderlabel).select("text").style("color","#fff")
 
       } //end addClick
 
@@ -616,16 +713,17 @@
 
 
       function wrap(text, width) {
+        console.log(width)
         text.each(function() {
           var text = d3.select(this),
-            words = text.text().split(/\s+/).reverse(),
-            word,
-            line = [],
-            lineNumber = 0,
-            lineHeight = 1, // ems
-            y = text.attr("y"),
-            dy = parseFloat(text.attr("dy")),
-            tspan = text.text(null).append("tspan").attr("x", -10).attr("y", y).attr("dy", dy + "em");
+              words = text.text().split(/\s+/).reverse(),
+              word,
+              line = [],
+              lineNumber = 0,
+              lineHeight = 1.1, // ems
+              y = text.attr("y"),
+              dy = parseFloat(text.attr("dy")),
+              tspan = text.text(null).append("tspan").attr("x", -9).attr("y", y).attr("dy", dy + "em");
           while (word = words.pop()) {
             line.push(word);
             tspan.text(line.join(" "));
@@ -633,18 +731,59 @@
               line.pop();
               tspan.text(line.join(" "));
               line = [word];
-              tspan = text.append("tspan").attr("x", -10).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+              tspan = text.append("tspan").attr("x", -9).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
             }
           }
-        });
+
+          currtextheight = d3.select(this).node().getBBox().height;
+          console.log(currtextheight);
+          d3.select(this).selectAll("tspan").attr("y",9 -(currtextheight*0.666)/2)//.attr("dy",0 + "em")
+
+
+        }
+      );
       }
+
+      // function wrap(text, width) {
+      //   console.log(text);
+      //         text.each(function() {
+      //           var text = d3.select(this),
+      //             words = text.text().split(/\s+/).reverse(),
+      //             word,
+      //             line = [],
+      //             lineNumber = 0,
+      //             lineHeight = 1.1, // ems
+      //             y = text.attr("y"),
+      //             x = text.attr("x"),
+      //             dy = parseFloat(text.attr("dy")),
+      //             tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+      //             console.log(dy)
+      //             while (word = words.pop()) {
+      //               line.push(word);
+      //               tspan.text(line.join(" "));
+      //               if (tspan.node().getComputedTextLength() > width) {
+      //                 if (lineNumber == 0) {
+      //                   tspan.attr("dy", dy - 0.8 + "em")
+      //                 } else {
+      //                   tspan.attr("dy", -dy + 0.75 + "em")
+      //                 }
+      //                 line.pop();
+      //                 tspan.text(line.join(" "));
+      //                 line = [word];
+      //                 ++lineNumber;
+      //                 tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", (1.1 * lineNumber - dy + 0.55) + "em").text(word);
+      //               }
+      //             }
+      //
+      //         });
+      //       }
 
       function tieFight() {
 
 
         //graphic.selectAll("*").remove();
         keypoints.selectAll("*").remove();
-        footer.selectAll("*").remove();
+        //footer.selectAll("*").remove();
 
 
 
@@ -768,14 +907,21 @@
         chartEnter.append('g')
           .attr('class', 'y axis')
           .call(yAxis)
-          .selectAll(".tick text").style("padding-right", "10px").call(wrap, margin.left);
+          .selectAll(".tick text")
+          .style("padding-right", "8px")
+        //.call(wrap, margin.left-12);
 
         d3.select('.y.axis')
-       		  	.transition()
-  		       	.duration(500)
+       		  	// .transition()
+  		       	// .duration(500)
               .call(yAxis)
-              .selectAll(".tick text").style("padding-right", "10px")
-    			  	.call(wrap, margin.left);
+              .selectAll(".tick text")
+              .style("padding-right", "8px")
+              .attr("y", "3")
+              .attr("dy", "0")
+              .attr("x","-9")
+              .call(wrap, margin.left-18);
+
 
         d3.select('.x.axis')
        		  	.transition()
@@ -909,8 +1055,8 @@
 
         d3.selectAll("text").attr("font-family", "'Open Sans', sans-serif");
 
-        d3.selectAll(".x text").attr("font-size", "12px").attr("fill", "#666");
-        d3.selectAll(".y text").attr("font-size", "12px").attr("fill", "#666");
+        d3.selectAll(".x text").attr("font-size", "14px").attr("fill", "#323132");
+        d3.selectAll(".y text").attr("font-size", "14px").attr("fill", "#323132");
 
         d3.selectAll(".y line")
           .attr("stroke", "#CCC")
@@ -1129,12 +1275,12 @@
 
 
         //create link to source
-        d3.select(".footer").append("p")
-          .text("Source: ")
-          .append("a")
-          .attr("href", dvc.essential.sourceURL)
-          .attr("target", "_blank")
-          .html(dvc.essential.sourceText);
+        // d3.select(".footer").append("p")
+        //   .text("Source: ")
+        //   .append("a")
+        //   .attr("href", dvc.essential.sourceURL)
+        //   .attr("target", "_blank")
+        //   .html(dvc.essential.sourceText);
 
         //use pym to calculate chart dimensions
         if (pymChild) {
