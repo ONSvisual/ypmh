@@ -116,14 +116,14 @@ table {
 
     .btn {
       position: relative;
-      padding: 10px 15px;
+      padding: 7px 15px;
       margin: 0;
       line-height: normal;
       color: #124d80;
       font-size: 0.8em !important;
       font-size: 1rem;
       font-weight: 400;
-      border-radius: 0px !important;
+      border-radius: 20px !important;
       display: inline-block;
       text-rendering: optimizeLegibility;
       border:2px solid #124d80;
@@ -227,7 +227,7 @@ table {
       cursor: pointer;
     }
 
-    .tooltip {
+    .tooltip, .tooltip2 {
       position: relative;
       visibility: hidden;
       display: inline-block;
@@ -249,6 +249,20 @@ table {
              opacity: 0.9;
            }
 
+   #tooltip2 {
+      background: #159191;
+      color: #fff;
+      font-family: 'Open Sans';
+      font-weight:400;
+      font-size:12px;
+      border: 1px solid #159191;
+      border-radius: 5px;
+      padding: 5px;
+      width: 35px;
+      text-align:center;
+      opacity: 0.9;
+    }
+
 
            #tooltip::after {
                content: " ";
@@ -260,6 +274,17 @@ table {
                border-style: solid;
                border-color: transparent transparent #206095 transparent;
              }
+
+             #tooltip2::after {
+                content: " ";
+                position: absolute;
+                bottom: 100%;  /* At the top of the tooltip */
+                left: calc(50% - 2.5px);
+                margin-left: 0px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent transparent #159191 transparent;
+              }
 
 
              .tooltipleft::after {
@@ -299,7 +324,9 @@ table {
     <div class="footer">
     Office for National Statistics & NHS Digital
     </div>
-    <div id="tooltip" display="none" style="position: absolute; opacity: 0;">
+    <div id="tooltip" display="none" style="position: absolute; opacity: 0;"></div>
+    <div id="tooltip2" display="none" style="position: absolute; opacity: 0;"></div>
+
     <div id="keypoints">
       <p></p>
     </div>
@@ -319,7 +346,8 @@ table {
       var curr_age = "YMH_2to4";
       var curr_id = null;
       var gender = "mymedian";
-
+      var x = null;
+      var formatval = d3.format(".0f");
 
       // image details for age groups
       var data_2to4 = [
@@ -620,6 +648,37 @@ table {
 
             } //end hideTooltip
 
+            function showTooltip2(d,x,vall){
+
+
+            var rect = x.getBoundingClientRect();
+            console.log(rect.x);
+
+                ox = ((rect.left + rect.right) / 2) - 26
+                oy = rect.top
+
+                  d3.select("#tooltip2")
+                        .classed("tooltipleft",false)
+                        .classed("tooltipright",false)
+                        .style("left", ox + "px")
+                        .style("top", (oy + 20) + "px")
+                        .text(formatval(vall) + "%")
+                        .transition()
+                        .duration(300)
+                        .style("opacity","1");
+                //}
+
+              } //end showTooltip
+
+              function hideTooltip2(d){
+
+                d3.select("#tooltip2")
+                  .transition()
+                  .duration(300)
+                  .style("opacity","0");
+
+              } //end hideTooltip
+
       function addClick(d) {
 
         console.log(d)
@@ -787,7 +846,7 @@ table {
 
 
 
-        var x = d3.scaleLinear()
+        x = d3.scaleLinear()
           .range([0, chart_width]);
 
         y = d3.scalePoint()
@@ -1023,6 +1082,9 @@ table {
                 return y(d.subcat);
               })
               .attr('r', ball * 1.5)
+              .attr("data-nm", function(d, i) {
+                return d[gender];
+              })
               .attr('cx', function(d, i) {
                 return x(d[gender]);
               });
@@ -1035,11 +1097,20 @@ table {
             .attr("fill", "#fff")
             .attr("stroke", dvc.essential.colour_palette[1])
             .attr("stroke-width", "3px")
+            .attr("data-nm", function(d, i) {
+              return d[gender];
+            })
             .attr('cx', 0)
             .attr('cy', function(d) {
               return y(d.subcat);
             })
             .attr('r', ball * 1.5)
+            .on("mouseover", function(d){
+              vall = d[gender];
+              console.log(vall);
+              showTooltip2(d,this,vall);
+            })
+            .on("mouseout", function(d){hideTooltip2(d);})
             .transition()
             .duration(750)
             .attr('cx', function(d, i) {
@@ -1251,11 +1322,12 @@ table {
         .on("keypress", function(d) {
           if(d3.event.keyCode === 32 || d3.event.keyCode ===13) {
             d3.selectAll(".btn--secondary").classed("btnselect",false);
-            d3.select("#" + d.id).classed("btnselect",true);
+            console.log(d3.select(this).attr("id"))
+            d3.select(this).classed("btnselect",true);
 
 
 
-            curr_age = d3.select("#" + d.id).attr("id")
+            curr_age = d3.select(this).attr("id")
             d3.csv("data/" + curr_age + ".csv", function(error, data) {
               graphic_data1 = data;
               update_graphic(curr_id);
