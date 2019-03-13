@@ -161,6 +161,8 @@ table {
 
     .btn:focus, .filter_img:focus, .gender_img:focus{
       outline: 3px solid #f93;
+      border-radius: 20px;
+
     }
 
     button,
@@ -223,6 +225,11 @@ table {
         stroke: #159191;
     }
 
+    .circleactive2 {
+        fill: #159191;
+        stroke: #159191;
+    }
+
     .rect, .legend {
       cursor: pointer;
     }
@@ -275,15 +282,17 @@ table {
                border-color: transparent transparent #206095 transparent;
              }
 
-             #tooltip2::after {
+
+
+              #tooltip2::after {
                 content: " ";
                 position: absolute;
-                bottom: 100%;  /* At the top of the tooltip */
-                left: calc(50% - 2.5px);
-                margin-left: 0px;
+                top: 100%; /* At the bottom of the tooltip */
+                left: 50%;
+                margin-left: -5px;
                 border-width: 5px;
                 border-style: solid;
-                border-color: transparent transparent #159191 transparent;
+                border-color: #159191 transparent transparent transparent;
               }
 
 
@@ -654,14 +663,14 @@ table {
             var rect = x.getBoundingClientRect();
             console.log(rect.x);
 
-                ox = ((rect.left + rect.right) / 2) - 26
+                ox = ((rect.left + rect.right) / 2) - 23.5
                 oy = rect.top
 
                   d3.select("#tooltip2")
                         .classed("tooltipleft",false)
                         .classed("tooltipright",false)
                         .style("left", ox + "px")
-                        .style("top", (oy + 20) + "px")
+                        .style("top", (oy - 30) + "px")
                         .text(formatval(vall) + "%")
                         .transition()
                         .duration(300)
@@ -1106,11 +1115,15 @@ table {
             })
             .attr('r', ball * 1.5)
             .on("mouseover", function(d){
+              d3.select(this).classed("circleactive2", true);
               vall = d[gender];
               console.log(vall);
               showTooltip2(d,this,vall);
             })
-            .on("mouseout", function(d){hideTooltip2(d);})
+            .on("mouseout", function(d){
+              d3.select(this).classed("circleactive2", false);
+              hideTooltip2(d);
+            })
             .transition()
             .duration(750)
             .attr('cx', function(d, i) {
