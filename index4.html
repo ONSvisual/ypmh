@@ -110,6 +110,7 @@ table {
     }
 
     #filtertext {
+      line-height: 1.3;
       padding: 20px 0px 10px 0px;
     }
 
@@ -572,6 +573,24 @@ table {
           d3.select(".images_div")
             .selectAll(".filter_img")
             .on("click", addClick)
+            .on("mouseover", function(d){
+              d3.select(this)
+                .style("border", "2px #124d80 solid")
+                .style("background-color", "#124d80")
+
+              d3.select(this).select("img").attr("src", function(d) {return "img/" + d.id + "_sel.svg"})
+              d3.select(this).select("text").style("color","#fff");
+            })
+            .on("mouseout", function(d){
+              d3.select(this)
+                .style("border", "2px #124d80 solid")
+                .style("background-color", "#fff")
+                .style("color","#124d80");
+
+              d3.select(this).select("img").attr("src", function(d) {return "img/" + d.id + ".svg"});
+              d3.select(this).selectAll("text").style("color","#124d80")
+
+            })
             .on("keypress", function(d) {
               if(d3.event.keyCode === 32 || d3.event.keyCode ===13) {
                 addClick(d);
@@ -611,6 +630,24 @@ table {
 
           d3.select(".gender_div")
             .selectAll(".gender_img")
+            .on("mouseover", function(d){
+              d3.select(this)
+                .style("border", "2px #124d80 solid")
+                .style("background-color", "#124d80")
+
+              d3.select(this).select("img").attr("src", function(d) {return "img/" + d + "_sel.svg"})
+              d3.select(this).select("text").style("color","#fff");
+            })
+            .on("mouseout", function(d){
+              d3.select(this)
+                .style("border", "2px #124d80 solid")
+                .style("background-color", "#fff")
+                .style("color","#124d80");
+
+              d3.select(this).select("img").attr("src", function(d) {return "img/" + d + ".svg"});
+              d3.select(this).selectAll("text").style("color","#124d80")
+
+            })
             .on("click", addGenderClick)
             .on("keypress", function(d) {
               if(d3.event.keyCode === 32 || d3.event.keyCode ===13) {
